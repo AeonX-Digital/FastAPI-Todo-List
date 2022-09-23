@@ -1,5 +1,4 @@
 
-from tkinter.messagebox import NO
 from typing import Optional
 from pydantic import BaseModel
 
@@ -34,6 +33,19 @@ class Update_todo_list(BaseModel):
     class Config:
         orm_mode = True
         
+class log_in(BaseModel):
+    email:str
+    password: str
+
+    class Config:
+        orm_mode = True
 
 
+# class to_do(BaseModel):
+#     work_topic:str
+#     working_hr:int
+
+
+#     class Config:
+#         orm_mode = True
 

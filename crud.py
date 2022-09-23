@@ -76,4 +76,29 @@ def delete_todo_details_by_id(db: Session, sl_id: int):
         raise Exception(e)
 
 def get_todo_by_id(db: Session, id: int):
-    return db.query(model.todo_list).filter(model.todo_list.id == id).first()        
+    return db.query(model.todo_list).filter(model.todo_list.id == id).first()    
+
+
+def user_log_in (db: Session,log_in= schema.log_in):
+    details = model.log_in(
+        email=log_in.email,
+        password = log_in.password,
+        
+    )
+    db.add(details)
+    db.commit()
+    db.refresh(details)
+    return details
+
+def get_log_in_usres(db: Session, skip: int = 0, limit: int = 100): 
+     return db.query(model.log_in).offset(skip).limit(limit).all()
+
+
+# def user_to_do(db:Session,to_do = schema.to_do,email = schema.log_in):
+#     db_to_do =(
+#         db.query(model.log_in)
+#         .filter(
+#         model.log_in.email == email,
+#         ).first()
+#     )
+    

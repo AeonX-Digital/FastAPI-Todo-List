@@ -43,7 +43,14 @@ def return_a_todo (id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=f"No record found")
     return todo
 
+@app.post('/log_in',response_model = schema.log_in)
+def log_in (log_in: schema.log_in,db: Session = Depends(get_db)):
+    return crud.user_log_in(db=db, log_in=log_in)
 
+@app.get('/logins',response_model =List[schema.log_in])
+def list_of_logins(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    log_in = crud.get_log_in_usres(db=db, skip=skip, limit=limit)
+    return log_in
 @app.post('/todos', response_model=schema.todo_list_add)
 def new_todo(todo: schema.todo_list_add, db: Session = Depends(get_db)):
     # title = crud.get_todo_by_todo_id(db=db, title=model.todo_list.title)
