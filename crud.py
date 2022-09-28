@@ -1,4 +1,5 @@
-
+from multiprocessing.sharedctypes import Value
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import model
 import schema
@@ -94,11 +95,37 @@ def get_log_in_usres(db: Session, skip: int = 0, limit: int = 100):
      return db.query(model.log_in).offset(skip).limit(limit).all()
 
 
-# def user_to_do(db:Session,to_do = schema.to_do,email = schema.log_in):
-#     db_to_do =(
-#         db.query(model.log_in)
-#         .filter(
-#         model.log_in.email == email,
-#         ).first()
-#     )
+def user_to_do(db:Session,to_do = schema.work_to_done,email = schema.log_in):
+    db_to_do =(
+        db.query(model.log_in)
+        .filter(
+        model.log_in.email == email,
+        ).first()
+    )
+    if db_to_do:
+        data = model.work_to_done(
+                work_topic =to_do.work_topic,
+                working_hr = to_do.working_hr,
+                
+            )
+        db.add(data)
+        db.commit()
+        db.refresh(data)
+        return data
+        
+    # for data in db_to_do:
+    #     data = model.work_to_done(
+    #             work_topic =to_do.work_topic,
+    #             working_hr = to_do.working_hr,
+                
+    #         )
+    #     db.add(data)
+    #     db.commit()
+    #     db.refresh(data)
+    #     return data
     
+    if db_to_do is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="email not found."
+        )
+        

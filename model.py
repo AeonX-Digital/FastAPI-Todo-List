@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String
 from database import Base
 from database import Base
-# from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 
 
 
@@ -21,14 +21,13 @@ class log_in(Base):
     password = Column (String(50),index=True, nullable=False)
 
 
-# class to_do(Base):
+class work_to_done(Base):
 
-#     __tablename__ = "to_do"
+    __tablename__ = "work_to_done"
 
-#     id = Column(Integer, primary_key=True, autoincrement=True, index=True, nullable=False)
-#     work_topic = Column(String(50), nullable=False,primary_key=True)
-#     working_hr = Column(float(50), nullable=False,primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True, nullable=False)
+    work_topic = Column(String(50), nullable=False)
+    working_hr = Column(Integer, nullable=False)
 
-#     user = relationship("AdminUserModel", backref="products")
-
+user = relationship("log_in", backref="work_to_done")
   

@@ -1,8 +1,9 @@
+from email.header import Header
 from ensurepip import version
 from turtle import title
 from typing import List
 
-from fastapi import Depends,FastAPI ,HTTPException
+from fastapi import Depends,FastAPI ,HTTPException,Header
 from sqlalchemy.orm import Session
 
 from database import SessionLocal, engine
@@ -46,6 +47,13 @@ def return_a_todo (id: int, db: Session = Depends(get_db)):
 @app.post('/log_in',response_model = schema.log_in)
 def log_in (log_in: schema.log_in,db: Session = Depends(get_db)):
     return crud.user_log_in(db=db, log_in=log_in)
+
+@app.post("/to_do",response_model= schema.work_to_done)
+def get_to_do(
+    to_do: schema.work_to_done,
+    email: str = Header(None),
+    db: Session = Depends(get_db)): 
+    return crud.user_to_do(to_do=to_do,db=db,email=email)
 
 @app.get('/logins',response_model =List[schema.log_in])
 def list_of_logins(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

@@ -41,11 +41,11 @@ class log_in(BaseModel):
         orm_mode = True
 
 
-# class to_do(BaseModel):
-#     work_topic:str
-#     working_hr:int
+class work_to_done(BaseModel):
+    work_topic:str
+    working_hr:int
 
 
-#     class Config:
-#         orm_mode = True
+    class Config:
+        orm_mode = True
 
